@@ -1,27 +1,27 @@
 # SpadesX Plugin Template
 
-[![Build Plugin](https://github.com/YOUR_USERNAME/spadesx-plugin-template/workflows/Build%20Plugin/badge.svg)](https://github.com/YOUR_USERNAME/spadesx-plugin-template/actions)
+A standalone template repository for developing [SpadesX](https://github.com/SpadesX/SpadesX) server plugins.
 
-A standalone template repository for developing [SpadesX](https://github.com/SpadesX/SpadesX) server plugins. This template provides a complete cross-platform build system with GitHub Actions CI/CD support.
+This template provides a complete cross-platform build system with GitHub Actions CI/CD support for developing plugins independently from the main SpadesX codebase.
 
 ## Features
 
-- 🚀 **Quick Start**: Clone and start coding immediately
-- 🔧 **Cross-Platform**: Builds on Linux, macOS, and Windows
-- ⚙️ **CMake + Makefile**: Flexible build system
-- 🤖 **GitHub Actions**: Automatic builds and releases for all platforms
-- 📦 **Self-Contained**: Includes PluginAPI.h, no SpadesX source needed
-- 🎯 **Production Ready**: Optimized release builds
+- Quick Start: Clone and start coding immediately
+- Cross-Platform: Builds on Linux, macOS, and Windows
+- CMake + Makefile: Flexible build system
+- GitHub Actions: Automatic builds and releases for all platforms
+- Self-Contained: Includes PluginAPI.h, no SpadesX source needed
+- Production Ready: Optimized release builds
 
-## Quick Start
+## Installation
 
-### Prerequisites
+##### Prerequisites
 
 - **Linux**: `build-essential`, `cmake`
 - **macOS**: Xcode Command Line Tools, `cmake` (via Homebrew)
 - **Windows**: Visual Studio 2019+ or MinGW, CMake
 
-### Clone and Build
+##### Clone and Build
 
 ```bash
 # Clone this template
@@ -36,7 +36,7 @@ make
 
 ## Usage
 
-### Building Your Plugin
+##### Building Your Plugin
 
 **Option 1: Using the template as-is**
 ```bash
@@ -54,7 +54,7 @@ cp template_plugin.c my_gamemode.c
 make PLUGIN_NAME=my_gamemode PLUGIN_SOURCE=my_gamemode.c
 ```
 
-### Build Commands
+##### Build Commands
 
 ```bash
 make                 # Build plugin (release mode)
@@ -64,7 +64,7 @@ make distclean       # Deep clean (including downloaded headers)
 make help            # Show all available commands
 ```
 
-### CMake Direct Usage
+##### CMake Direct Usage
 
 ```bash
 mkdir build && cd build
@@ -74,7 +74,7 @@ cmake --build . --config Release
 
 ## Plugin Development
 
-### Project Structure
+##### Project Structure
 
 ```
 your-plugin/
@@ -89,7 +89,7 @@ your-plugin/
 └── .gitignore
 ```
 
-### Creating Your Plugin
+##### Creating Your Plugin
 
 1. **Copy the template** or create a new `.c` file:
    ```c
@@ -125,7 +125,7 @@ your-plugin/
    make PLUGIN_NAME=my_plugin PLUGIN_SOURCE=my_plugin.c
    ```
 
-### Available Event Handlers
+##### Available Event Handlers
 
 See `template_plugin.c` for a complete example with all event handlers:
 
@@ -141,7 +141,7 @@ See `template_plugin.c` for a complete example with all event handlers:
 - `on_grenade_explode` - Grenade detonation
 - `on_color_change` - Player color change (can deny)
 
-### Plugin API
+##### Plugin API
 
 The `plugin_api_t` structure provides access to:
 
@@ -172,16 +172,16 @@ The `plugin_api_t` structure provides access to:
 
 This template includes automatic builds for all platforms.
 
-### Automatic Builds
+##### Automatic Builds
 
 Every push triggers builds for:
-- 🐧 Linux (`.so`)
-- 🍎 macOS (`.dylib`)
-- 🪟 Windows (`.dll`)
+- Linux (`.so`)
+- macOS (`.dylib`)
+- Windows (`.dll`)
 
 Build artifacts are available in the Actions tab.
 
-### Creating Releases
+##### Creating Releases
 
 To create a release with pre-built binaries:
 
@@ -196,7 +196,7 @@ GitHub Actions will automatically:
 2. Create a GitHub Release
 3. Attach all plugin binaries
 
-### Customizing Workflows
+##### Customizing Workflows
 
 Edit `.github/workflows/build.yml` to:
 - Change plugin name
@@ -206,7 +206,7 @@ Edit `.github/workflows/build.yml` to:
 
 ## Deployment
 
-### Installing on SpadesX Server
+##### Installing on SpadesX Server
 
 1. Build your plugin or download from releases
 2. Copy the plugin to SpadesX `plugins/` directory:
@@ -222,7 +222,7 @@ Edit `.github/workflows/build.yml` to:
    ```
 3. Start the server - plugin loads automatically
 
-### Distribution
+##### Distribution
 
 Share your plugin by:
 - Publishing releases on GitHub (automatic binaries)
@@ -231,7 +231,7 @@ Share your plugin by:
 
 ## Troubleshooting
 
-### Build Fails
+##### Build Fails
 
 **Missing PluginAPI.h**:
 ```bash
@@ -252,7 +252,7 @@ cmake --version
 # Update via package manager or download from cmake.org
 ```
 
-### Plugin Won't Load
+##### Plugin Won't Load
 
 - Check API version matches: `SPADESX_PLUGIN_API_VERSION`
 - Verify all required exports: `spadesx_plugin_info`, `spadesx_plugin_init`, `spadesx_plugin_shutdown`
@@ -261,7 +261,7 @@ cmake --version
 
 ## Examples
 
-### Minimal Plugin
+##### Minimal Plugin
 
 See `template_plugin.c` for a full-featured example.
 
@@ -293,9 +293,9 @@ Build:
 make PLUGIN_NAME=minimal PLUGIN_SOURCE=minimal.c
 ```
 
-## Contributing
+## Contribute
 
-Contributions welcome! Please:
+If you would like to contribute bug fixes, improvements, and new features please:
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
@@ -304,33 +304,6 @@ Contributions welcome! Please:
 
 ## License
 
-This template and example code is licensed under **GNU General Public License v3.0** (GPL-3.0), the same license as SpadesX.
+[GNU General Public License v3.0](LICENSE)
 
-**What this means for your plugin:**
-- This template and build system: GPL-3.0
-- PluginAPI.h: Part of SpadesX, GPL-3.0
-- **Your plugin code**: Must also be GPL-3.0 (or compatible) if you distribute it
-
-Plugins are derivative works of SpadesX and must comply with GPL-3.0 requirements:
-- Source code must be available
-- Any modifications must also be GPL-3.0
-- No additional restrictions can be imposed
-
-See [LICENSE](LICENSE) for full GPL-3.0 terms.
-
-## Resources
-
-- [SpadesX Repository](https://github.com/SpadesX/SpadesX)
-- [SpadesX Documentation](https://github.com/SpadesX/SpadesX/wiki)
-- [Plugin API Reference](PluginAPI.h)
-- [Example Plugins](https://github.com/SpadesX/SpadesX/tree/master/plugins)
-
-## Support
-
-- 🐛 [Report Issues](https://github.com/YOUR_USERNAME/your-plugin-name/issues)
-- 💬 [Discussions](https://github.com/YOUR_USERNAME/your-plugin-name/discussions)
-- 📖 [Wiki](https://github.com/YOUR_USERNAME/your-plugin-name/wiki)
-
----
-
-**Happy Plugin Development! 🎮**
+This template is licensed under GPL-3.0, the same license as SpadesX. Plugins developed using this template are derivative works and must comply with GPL-3.0 requirements.
