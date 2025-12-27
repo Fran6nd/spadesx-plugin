@@ -1,0 +1,45 @@
+# Build directories
+build/
+bin/
+obj/
+out/
+
+# Compiled plugin files
+*.so
+*.dylib
+*.dll
+*.o
+*.obj
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+!./Makefile
+*.cmake
+!CMakeLists.txt
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Compiler output
+*.log
+*.tmp
+
+# Downloaded API header (optional - uncomment if you want to track it)
+# PluginAPI.h
+
+# OS specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Plugin-specific build artifacts
+compile_commands.json

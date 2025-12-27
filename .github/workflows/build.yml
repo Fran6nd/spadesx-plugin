@@ -1,0 +1,117 @@
+name: Build Plugin
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    name: Build on Linux
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup build environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake
+
+    - name: Build plugin
+      run: make
+
+    - name: Test plugin exists
+      run: test -f build/plugins/my_plugin.so
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: plugin-linux
+        path: build/plugins/*.so
+
+  build-macos:
+    name: Build on macOS
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup build environment
+      run: |
+        brew install cmake
+
+    - name: Build plugin
+      run: make
+
+    - name: Test plugin exists
+      run: test -f build/plugins/my_plugin.dylib
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: plugin-macos
+        path: build/plugins/*.dylib
+
+  build-windows:
+    name: Build on Windows
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup MSVC
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Configure CMake
+      run: |
+        mkdir build
+        cd build
+        cmake .. -DPLUGIN_NAME=my_plugin -DPLUGIN_SOURCE=template_plugin.c
+
+    - name: Build plugin
+      run: |
+        cd build
+        cmake --build . --config Release
+
+    - name: Test plugin exists
+      run: Test-Path build/plugins/my_plugin.dll
+      shell: powershell
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: plugin-windows
+        path: build/plugins/*.dll
+
+  create-release:
+    name: Create Release
+    needs: [build-linux, build-macos, build-windows]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          artifacts/plugin-linux/*
+          artifacts/plugin-macos/*
+          artifacts/plugin-windows/*
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
