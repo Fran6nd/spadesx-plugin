@@ -47,13 +47,23 @@ endif()
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-# Compiler flags
-add_compile_options(
-    -Wall
-    -Wextra
-    $<$<CONFIG:Debug>:-g>
-    $<$<CONFIG:Release>:-O2>
-)
+# Compiler flags (MSVC vs GCC/Clang)
+if(MSVC)
+    # MSVC compiler flags
+    add_compile_options(
+        /W4                              # Warning level 4
+        $<$<CONFIG:Debug>:/Zi>          # Debug info
+        $<$<CONFIG:Release>:/O2>        # Optimize for speed
+    )
+else()
+    # GCC/Clang compiler flags
+    add_compile_options(
+        -Wall
+        -Wextra
+        $<$<CONFIG:Debug>:-g>
+        $<$<CONFIG:Release>:-O2>
+    )
+endif()
 
 # Include directory for API header
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
@@ -65,10 +75,12 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 add_library(${PLUGIN_NAME} SHARED ${PLUGIN_SOURCE})
 
 # Platform-specific compilation flags
-target_compile_options(${PLUGIN_NAME} PRIVATE
-    -fvisibility=default
-    $<$<PLATFORM_ID:Linux>:-fPIC>
-)
+if(NOT MSVC)
+    target_compile_options(${PLUGIN_NAME} PRIVATE
+        -fvisibility=default
+        $<$<PLATFORM_ID:Linux>:-fPIC>
+    )
+endif()
 
 # Set properties
 set_target_properties(${PLUGIN_NAME} PROPERTIES
