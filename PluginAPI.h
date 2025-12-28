@@ -200,6 +200,26 @@ typedef struct plugin_api {
     plugin_result_t (*player_set_position)(player_t* player, vector3f_t position);
 
     // ========================================================================
+    // BOT FUNCTIONS
+    // ========================================================================
+
+    // Create a bot player
+    // name: Bot name (max 16 characters)
+    // team: Team ID (0, 1, or 2 for spectator)
+    // weapon: Weapon type (0=rifle, 1=smg, 2=shotgun)
+    // Returns: Pointer to created bot player, or NULL on failure
+    player_t* (*bot_create)(server_t* server, const char* name, uint8_t team, uint8_t weapon);
+
+    // Destroy a bot player
+    // bot: Bot player to destroy (must have is_bot == 1)
+    // Returns: PLUGIN_OK on success, error code on failure
+    plugin_result_t (*bot_destroy)(server_t* server, player_t* bot);
+
+    // Check if a player is a bot
+    // Returns: 1 if bot, 0 if human player
+    uint8_t (*player_is_bot)(player_t* player);
+
+    // ========================================================================
     // MAP FUNCTIONS
     // ========================================================================
 

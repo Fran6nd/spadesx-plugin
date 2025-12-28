@@ -38,6 +38,10 @@ typedef struct {
 static player_block_tracker_t player_blocks[32]; // Max 32 players
 static int tick_counter = 0; // For debug logging
 
+// Bot player references
+static player_t* bot_team_0 = NULL;
+static player_t* bot_team_1 = NULL;
+
 // ============================================================================
 // PLUGIN LIFECYCLE
 // ============================================================================
@@ -94,6 +98,22 @@ PLUGIN_EXPORT void spadesx_plugin_on_server_init(server_t* server, const plugin_
     int32_t intel_z = plugin_api->map_find_top_block(map, 255, 255);
     plugin_api->init_set_intel_position(server, 0, 255, 255, intel_z);
     plugin_api->init_set_intel_position(server, 1, 255, 255, intel_z);
+
+    // Create bots - one for each team
+    api->log_info(PLUGIN_NAME, "Spawning bots...");
+    bot_team_0 = api->bot_create(server, "Bot_Blue", 0, 0);  // Team 0 (Blue), Rifle
+    if (bot_team_0) {
+        api->log_info(PLUGIN_NAME, "Created bot for team 0: %s", api->player_get_name(bot_team_0));
+    } else {
+        api->log_error(PLUGIN_NAME, "Failed to create bot for team 0");
+    }
+
+    bot_team_1 = api->bot_create(server, "Bot_Green", 1, 1);  // Team 1 (Green), SMG
+    if (bot_team_1) {
+        api->log_info(PLUGIN_NAME, "Created bot for team 1: %s", api->player_get_name(bot_team_1));
+    } else {
+        api->log_error(PLUGIN_NAME, "Failed to create bot for team 1");
+    }
 
     api->log_info(PLUGIN_NAME, "Map initialization complete!");
 }
